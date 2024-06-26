@@ -1,7 +1,7 @@
 import streamlit as st
 from datetime import date
 from src.bedrock_client import create_bedrock_client
-from src.conversation_handler import handle_chat_input, process_ai_response
+from src.conversation_handler import handle_chat_input, process_ai_response, handle_document_message
 from src.utils import new_chat, format_search_results
 import base64
 import random
@@ -29,8 +29,11 @@ def main():
     if "token_usage" not in st.session_state:
         st.session_state.token_usage = None
 
-    # File uploader - keep it at the top, right after the title
+    # File uploader for images
     uploaded_file = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg", "webp"], key=f"uploader_{st.session_state['uploader_key']}")
+
+    # File uploader for documents
+    uploaded_document = st.file_uploader("Upload a document", type=["pdf", "csv", "doc", "docx", "xls", "xlsx", "html", "txt", "md"], key=f"document_{st.session_state['uploader_key']}")
 
     # Sidebar elements
     st.sidebar.button("New Chat", type="primary", on_click=new_chat)
@@ -88,9 +91,14 @@ def main():
     if prompt := st.chat_input("Ask me anything!"):
         image_content = None
         image_format = None
+        document_content = None
+        document_format = None
         if uploaded_file is not None:
             image_content = uploaded_file.getvalue()
             image_format = uploaded_file.type.split('/')[-1]
+        if uploaded_document is not None:
+            document_content = uploaded_document.getvalue()
+            document_format = uploaded_document.type.split('/')[-1]
 
         try:
             # Immediately display user message and image
@@ -99,6 +107,10 @@ def main():
                 if image_content:
                     image_b64 = base64.b64encode(image_content).decode()
                     st.image(f"data:image/{image_format};base64,{image_b64}", caption="Uploaded Image", width=300)
+                if document_content:
+                    # Handle document message
+                    document_message = handle_document_message(document_content, document_format)
+                    st.session_state.history.append(document_message)
 
             # Update session state
             handle_chat_input(prompt, image_content, image_format)

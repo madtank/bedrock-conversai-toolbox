@@ -30,6 +30,30 @@ ToolboxAI now supports image uploads, allowing for more diverse and rich interac
 
 <img src="assets/image_upload.png" alt="Image Upload Feature" width="600"/>
 
+## Sending Messages with Documents
+
+ToolboxAI has been enhanced to support sending messages with documents, broadening the scope of interactions with the AI. This feature allows users to include documents in their conversations, which the AI can then process and respond to accordingly.
+
+### Supported Document Formats
+
+The application supports a variety of document formats, including:
+- PDF (`pdf`)
+- CSV (`csv`)
+- Microsoft Word (`doc`, `docx`)
+- Microsoft Excel (`xls`, `xlsx`)
+- HTML (`html`)
+- Plain Text (`txt`)
+- Markdown (`md`)
+
+### How to Use
+
+To send a document in a message:
+1. Click on the "Upload a document" button in the chat interface.
+2. Select a document file from your device in one of the supported formats.
+3. The document will be sent as part of your message to the AI, which can then provide feedback or information based on the document's content.
+
+This feature opens up new possibilities for document-based queries and analyses, enhancing the utility and versatility of ToolboxAI.
+
 ## Prerequisites
 
 - Python 3.9+

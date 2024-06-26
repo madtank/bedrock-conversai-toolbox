@@ -26,6 +26,22 @@ def handle_chat_input(prompt, image_content=None, image_format=None):
     st.session_state.history.append(user_message)
     st.session_state.display_messages.append(display_message)
 
+def handle_document_message(document_content, document_format):
+    # This function processes and sends messages with documents
+    # It supports document formats: 'pdf', 'csv', 'doc', 'docx', 'xls', 'xlsx', 'html', 'txt', and 'md'
+    document_message = {
+        "role": "user",
+        "content": [{
+            "document": {
+                "format": document_format,
+                "source": {
+                    "bytes": document_content
+                }
+            }
+        }]
+    }
+    return document_message
+
 def process_ai_response(bedrock_client, model_id, messages, system_prompts, inference_config, additional_model_fields):
     while True:
         with st.chat_message("assistant"):
